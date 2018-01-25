@@ -1,26 +1,58 @@
+#!/bin/bash
 
-mkdir ~/.vim
+if [ ! -d ~/.vim ]; then
+	mkdir ~/.vim
+fi
+echo Created .vim directory
 
+if [ ! -f ~/.vimrc ]; then
+	if [ ! -d ~/Projects ]; then
+		mkdir ~/Projects
+	fi
 
-mkdir -p ~/Project && \
-	git clone https://github.com/LukeBluett/vim.git ~/Project
+	git clone https://github.com/LukeBluett/vim.git ~/Projects
 
-cp ~/Project/vim/vimrc ~/.vimrc
+	ln -s ~/Projects/vim/vimrc ~/.vimrc
+fi
+echo Set .vimrc
 
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+if [ ! -d ~/.vim/autoload ];
+then
+		mkdir ~/.vim/autoload
+fi
+echo Created autoload Folder
+
+if [ ! -d ~/.vim/bundle ];
+then
+		mkdir ~/.vim/bundle
+fi
+echo Created bundle Folder
+
+if [ ! -f ~/.vim/autoload/pathogen.vim ];
+then
 	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+fi
+echo Added pathogen.vim
 
-git clone https://github.com/tpope/vim-fugitive ~/.vim/bundle 
+if [ ! -d ~/.vim/bundle/vim-fugitive ];
+then
+	git clone https://github.com/tpope/vim-fugitive ~/.vim/bundle/vim-fugitive 
+	vim -u NONE -c "helptags ~/.vim/bundle/vim-fugitive/doc" -c q
+fi
+echo Added vim-fugitive
 
-vim -u NONE -c "helptags ~/.vim/bundle/vim-fugitive/doc" -c q
+if [ ! -d ~/.vim/bundle/nerdtree ];
+then	
+	git clone https://github.com/scrooloose/nerdtree ~/.vim/bundle/nerdtree
+	vim -u NONE -c "helptags ~/.vim/bundle/nerdtree/doc" -c q
+fi
+echo Added nerdtree
 
-git clone https://github.com/scrooloose/nerdtree ~/.vim/bundle
-
-vim -u NONE -c "helptags ~/.vim/bundle/nerdtree/doc" -c q
-
-mkdir -p ~/Project/vim/colours && \
-	git clone https://github.com/NLKNguyen/papercolor-theme.git ~/Project/vim/colours && \
-	cp -r ~/Project/vim/colours/papercolor-theme/colors ~/.vim/
-
-
+if [ ! -d ~/Projects/vim/colours ];
+then
+	mkdir ~/Projects/vim/colours
+	git clone https://github.com/NLKNguyen/papercolor-theme.git ~/Projects/vim/colours
+	cp -r ~/Projects/vim/colours/papercolor-theme/colors ~/.vim/
+fi
+echo Added Colours
 
